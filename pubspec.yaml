@@ -14,10 +14,11 @@ description: ws test application
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
-  web_socket_channel: ^1.0.13
+  provider: ^3.0.0+1
+  connectivity: ^0.4.3+2
   flutter:
     sdk: flutter
 
