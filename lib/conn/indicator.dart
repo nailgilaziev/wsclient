@@ -9,17 +9,6 @@ class ConnIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Line>(
         builder: (BuildContext context, Line line, Widget child) {
-      if (line.modeOffline)
-        return Column(children: [
-          Text(
-            'Offline mode',
-            style: TextStyle(fontSize: 20),
-          ),
-          Text(
-            'Last sync date: ${line.lastSync}',
-            style: TextStyle(fontSize: 14),
-          ),
-        ]);
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,43 +33,79 @@ class ConnIndicator extends StatelessWidget {
                   ),
           line.status == LineStatus.waiting
               ? _ReconnectWaitingIndicator()
-              : Text(
-                  line.status.toString().substring(11),
-                  style: TextStyle(fontSize: 20),
-                ),
+              : Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              line.status.toString().substring(11),
+              style: TextStyle(fontSize: 18),
+            ),
+            if (line.status == LineStatus.disconnected)
+              Text(
+                'Last sync date: ${line.lastSync}',
+                style: TextStyle(fontSize: 14),
+              ),
+          ]),
           if (line.err != null)
-            IconButton(icon: const Icon(Icons.warning), onPressed: () {}),
+            IconButton(
+                icon: const Icon(Icons.warning),
+                onPressed: () {
+                  _showMsg(context, line.err.toString());
+                }),
           if (line.status == LineStatus.searching)
             IconButton(
                 icon: const Icon(
                     Icons.signal_cellular_connected_no_internet_4_bar),
-                onPressed: () {}),
+                onPressed: () {
+                  // TODO(n): reachibility must SHOW SYSTEM STATE on/off wifi / net /airplane mode / restrictions
+                  _showMsg(
+                    context,
+                    '''нет wifi или network соединения. 
+Обеспечьте что-нибудь одно.
+Выключите airplane mode.
+Включите и подключитесь к wifi
+Разрешите мобильное соединение и уберите ограничения его использования''',
+                  );
+                }),
         ],
       );
     });
   }
+
+  void _showMsg(BuildContext context, String msg) =>
+      showDialog<String>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: SingleChildScrollView(
+                child: Text(
+                  msg,
+                  textScaleFactor: 0.8,
+                ),
+              ),
+            );
+          });
 }
 
 class _ReconnectWaitingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<Conn>(
-        builder: (BuildContext context, Conn conn, Widget child) {
-      var t = Provider.of<Texts>(context);
+    return Consumer<AutoReconnect>(builder:
+        (BuildContext context, AutoReconnect autoReconnect, Widget child) {
+      final t = Provider.of<Texts>(context);
       return InkWell(
         child: Column(
           children: <Widget>[
             Text(
               t.connection['problemsTitle'],
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 16),
             ),
             Text(
-              '${t.connection[LineStatus.waiting.toString()]} ${conn.secsBeforeReconnect}',
-              style: TextStyle(fontSize: 14),
+              '${t.connection[LineStatus.waiting.toString()]} ${autoReconnect
+                  .secsBeforeReconnect}',
+              style: TextStyle(fontSize: 12),
             ),
           ],
         ),
-        onTap: () => conn.manualConnect(),
+        onTap: () => Provider.of<Conn>(context).manualConnect(),
       );
     });
   }

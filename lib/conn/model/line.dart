@@ -11,32 +11,11 @@ enum LineStatus {
   disconnecting,
 }
 
-/// if modeOffline = false - status describes current state
-/// if modeOffline = true - status is null
 /// lastSync is null - if no synced data before, otherwise date
 /// err is filled for some LineStatuses for help to understand whats
 /// going on with device connection
 class Line with ChangeNotifier {
-  Line({bool initialModeOffline = true}) {
-    modeOffline = initialModeOffline;
-  }
-
-  bool _modeOffline = true;
-
-  bool get modeOffline => _modeOffline;
-
-  set modeOffline(bool v) {
-    _modeOffline = v;
-    if (_modeOffline) {
-      _status = null;
-      _err = null;
-    } else {
-      _status = LineStatus.disconnected;
-    }
-    notifyListeners();
-  }
-
-  LineStatus _status;
+  LineStatus _status = LineStatus.disconnected;
 
   LineStatus get status => _status;
 
@@ -51,8 +30,7 @@ class Line with ChangeNotifier {
     LineStatus.waiting
   ];
 
-  bool get manualConnectAvailable =>
-      !modeOffline && _manualConnectStatuses.contains(status);
+  bool get manualConnectAvailable => _manualConnectStatuses.contains(status);
 
   static const _manualCloseStatuses = [
     LineStatus.authorising,
@@ -60,16 +38,17 @@ class Line with ChangeNotifier {
     LineStatus.idle
   ];
 
-  bool get manualCloseAvailable {
-    return !modeOffline && _manualCloseStatuses.contains(status);
-  }
+  bool get manualCloseAvailable => _manualCloseStatuses.contains(status);
 
+  /// new status by default without error.
+  /// last error will be overridden with null value
   void statusChangedTo(LineStatus newStatus, {dynamic withEx}) {
-    if (_modeOffline) return;
+    // ignore: always_put_control_body_on_new_line
     if (_status == newStatus && err == withEx) return;
-    _status = newStatus;
-    //if error not specified it will be null. new status by default without error. move to doc section
+
+    /// if error not specified it will be null.
     _err = withEx;
+    _status = newStatus;
     notifyListeners();
   }
 }

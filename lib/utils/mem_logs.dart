@@ -2,6 +2,8 @@ class MemLogs {
   MemLogs(this._tag);
 
   final String _tag;
+
+  // TODO(nail): different queues for l / e / i msgs if one of them overflows fast
   final List<String> _lru = [];
 
   String _s(String msg, Exception e, String p) {
