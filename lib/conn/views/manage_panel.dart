@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wsclient/conn/model/conn.dart';
-import 'package:wsclient/conn/model/line.dart';
+import 'package:wsclient/conn/services/line.dart';
+import 'package:wsclient/conn/services/ws_connection.dart';
 import 'package:wsclient/utils/labeled_checkbox.dart';
 import 'package:wsclient/utils/mem_logs.dart';
 
 class ConnManagePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<Line>(
-      builder: (BuildContext context, Line line, Widget child) {
-        return Consumer<Conn>(
+    return Consumer<LineConnectivityStatus>(
+      builder: (BuildContext context, LineConnectivityStatus line,
+          Widget child) {
+        return Consumer<WsConnectionService>(
           builder: (context, conn, _) {
             final connectCallback = !line.manualConnectAvailable
                 ? null
                 : () => conn.manualConnect();
             final closeCallback =
-                !line.manualCloseAvailable ? null : () => conn.close();
+            !line.manualCloseAvailable ? null : () => conn.manualClose();
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

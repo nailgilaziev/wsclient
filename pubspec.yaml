@@ -18,7 +18,8 @@ environment:
 
 dependencies:
   provider: ^3.0.0+1
-  connectivity: ^0.4.3+2
+  conn_core:
+    path: ../conn_core
   flutter:
     sdk: flutter
 

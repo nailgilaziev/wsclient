@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
 
+// TODO(n): использовать part of b gthtgbcfnm, чтобы сокрыть управление Line xthtp statusChangedTo
+
 enum LineStatus {
   disconnected,
   waiting,
   searching,
   connecting,
-  authorising,
   fetching,
   idle,
   disconnecting,
@@ -14,7 +15,7 @@ enum LineStatus {
 /// lastSync is null - if no synced data before, otherwise date
 /// err is filled for some LineStatuses for help to understand whats
 /// going on with device connection
-class Line with ChangeNotifier {
+class LineConnectivityStatus with ChangeNotifier {
   LineStatus _status = LineStatus.disconnected;
 
   LineStatus get status => _status;
@@ -33,7 +34,6 @@ class Line with ChangeNotifier {
   bool get manualConnectAvailable => _manualConnectStatuses.contains(status);
 
   static const _manualCloseStatuses = [
-    LineStatus.authorising,
     LineStatus.fetching,
     LineStatus.idle
   ];
