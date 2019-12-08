@@ -1,9 +1,9 @@
+import 'package:app_logs/app_logs.dart';
+import 'package:conn_core/conn_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wsclient/conn/services/line.dart';
-import 'package:wsclient/conn/services/ws_connection.dart';
 import 'package:wsclient/utils/labeled_checkbox.dart';
-import 'package:wsclient/utils/mem_logs.dart';
+
 
 class ConnManagePanel extends StatelessWidget {
   @override
@@ -66,18 +66,18 @@ class ConnManagePanel extends StatelessWidget {
 
   void _showConnectionLogs(BuildContext rootContext) =>
       showDialog<String>(
-        context: rootContext,
-        builder: (BuildContext context) {
-          final memLogs = Provider.of<MemLogs>(rootContext);
-          return AlertDialog(
-            content: SingleChildScrollView(
-              child: Text(
-                memLogs.report(),
-                textScaleFactor: 0.8,
+          context: rootContext,
+          builder: (BuildContext context) {
+            final logger = Provider.of<Logger>(rootContext);
+            return AlertDialog(
+              content: SingleChildScrollView(
+                child: Text(
+                  logger.report(),
+                  textScaleFactor: 0.8,
+                ),
               ),
-            ),
-          );
-        });
+            );
+          });
 }
 
 class _AutoReconnectParamsPanel extends StatefulWidget {

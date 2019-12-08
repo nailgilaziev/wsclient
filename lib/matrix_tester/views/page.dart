@@ -12,7 +12,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ConnIndicator(),
+        title: const ConnIndicator(idleTitle: 'Есть связь'),
       ),
       body: SingleChildScrollView(
         child: Column(

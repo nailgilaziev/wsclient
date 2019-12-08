@@ -1,22 +1,23 @@
-import 'package:wsclient/conn/services/line.dart';
-import 'package:wsclient/conn/services/ws_connection.dart';
+import 'package:app_logs/app_logs.dart';
+import 'package:conn_core/conn_core.dart';
+import 'package:flutter/material.dart';
 import 'package:wsclient/matrix_tester/mngrs/matrix_bloc.dart';
-import 'package:wsclient/utils/mem_logs.dart';
 
 class Rep {
-  Rep() {
-    matrixBloc = MatrixBloc(memLogs);
-    autoReconnect = AutoReconnect(memLogs)
+  Rep(TargetPlatform platform) {
+    matrixBloc = MatrixBloc(connLogger);
+    setLogger(connLogger);
+    autoReconnect = AutoReconnect()
       ..on = true
       ..immediatelyAttempts = 1
       ..waitingSecs = 20;
-    conn = WsConnectionService(line, matrixBloc, autoReconnect, memLogs);
+    conn = WsConnectionService(line, matrixBloc, autoReconnect, platform);
   }
 
   AutoReconnect autoReconnect;
 
   // TODO(n): create MemLogsFabric
-  final MemLogs memLogs = MemLogs('CONN');
+  final AppLogger connLogger = AppLogger.forTag('CONN');
 
   final LineConnectivityStatus line = LineConnectivityStatus();
 

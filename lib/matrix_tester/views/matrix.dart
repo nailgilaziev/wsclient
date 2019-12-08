@@ -75,7 +75,7 @@ class MatrixView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('CALLED WIDJET BUILDER');
+    //print('CALLED WIDJET BUILDER');
     return Consumer<Matrix>(
         builder: (BuildContext context, Matrix x, Widget child) {
       if (x == null) return const Text('waiting');

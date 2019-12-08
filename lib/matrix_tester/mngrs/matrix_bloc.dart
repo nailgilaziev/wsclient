@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:app_logs/app_logs.dart';
+import 'package:conn_core/conn_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:wsclient/conn/services/worker.dart';
 import 'package:wsclient/matrix_tester/models/model.dart';
-import 'package:wsclient/utils/mem_logs.dart';
 
 class MatrixBloc extends WsWorker with ChangeNotifier {
   MatrixBloc(this.l) {
@@ -25,7 +25,7 @@ class MatrixBloc extends WsWorker with ChangeNotifier {
 
   Matrix x;
 
-  final MemLogs l;
+  final Logger l;
 
   final userId = DateTime.now().millisecondsSinceEpoch;
 
@@ -64,7 +64,7 @@ class MatrixBloc extends WsWorker with ChangeNotifier {
 
     var hi = masterMode ? 'm${myname ?? ''}' : 's';
 
-    l.i('trySend $hi writed?${trySend('$hi')}');
+    l.d('trySend $hi writed ? ${trySend('$hi')}');
   }
 
   @override
@@ -75,7 +75,7 @@ class MatrixBloc extends WsWorker with ChangeNotifier {
   @override
   void requestFetching() {
     final data = 'f${x.lastReceived}';
-    l.i('trySend $data writed?${trySend(data)}');
+    l.d('trySend $data writed ? ${trySend(data)}');
   }
 
   @override
@@ -133,5 +133,10 @@ class MatrixBloc extends WsWorker with ChangeNotifier {
     t?.cancel();
     t = null;
     notifyListeners();
+  }
+
+  @override
+  void onPause() {
+    // TODO: implement onPause
   }
 }
