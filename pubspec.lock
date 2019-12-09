@@ -50,10 +50,24 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.14.11"
+  common_widgets:
+    dependency: transitive
+    description:
+      path: "../common_widgets"
+      relative: true
+    source: path
+    version: "0.0.1"
   conn_core:
     dependency: "direct main"
     description:
       path: "../conn_core"
+      relative: true
+    source: path
+    version: "0.0.1"
+  conn_views:
+    dependency: "direct main"
+    description:
+      path: "../conn_views"
       relative: true
     source: path
     version: "0.0.1"
@@ -205,6 +219,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.11"
+  time_utils:
+    dependency: "direct main"
+    description:
+      path: "../time_utils"
+      relative: true
+    source: path
+    version: "0.0.1"
   typed_data:
     dependency: transitive
     description:

@@ -1,13 +1,11 @@
+import 'package:conn_views/indicator.dart';
+import 'package:conn_views/manage_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wsclient/conn/views/indicator.dart';
-import 'package:wsclient/conn/views/manage_panel.dart';
 import 'package:wsclient/matrix_tester/mngrs/matrix_bloc.dart';
 import 'package:wsclient/matrix_tester/views/matrix.dart';
 
 class MyHomePage extends StatelessWidget {
-  final TextEditingController _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,13 +41,11 @@ class MyHomePage extends StatelessWidget {
                     ),
                     Flexible(
                       child: CheckboxListTile(
-                        onChanged: bloc.started ? null : (bool v) =>
-                        bloc.masterMode = v,
-                        value: bloc.masterMode,
-                        title: const Text('SENDER MODE'),
-//                        subtitle: const Text(
-//                            'this device will be sender and others will be listener'),
-                      ),
+                          onChanged: bloc.started
+                              ? null
+                              : (bool v) => bloc.masterMode = v,
+                          value: bloc.masterMode,
+                          title: const Text('SENDER MODE')),
                     ),
                   ],
                 );
@@ -65,17 +61,5 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _sendMessage() {
-//    if (ws != null) {
-//      if (_controller.text.isNotEmpty) {
-//        ws.add(_controller.text);
-//        _controller.text = "";
-//        timeprint("Sended");
-//      }
-//    } else {
-//      print("WS IS NOT FILLED!!!!");
-//    }
   }
 }
